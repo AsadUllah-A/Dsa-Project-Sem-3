@@ -1,7 +1,9 @@
 #include <iostream>
+#include <conio.h>
 #include <iomanip>
 
 using namespace std;
+
 class ErrorHandling
 {
 public:
@@ -44,6 +46,7 @@ public:
         }
         return true;
     }
+
     bool passwordValidation(const string &str)
     {
         bool isLengthValid = str.length() >= 6;
@@ -64,6 +67,7 @@ public:
         }
         return true;
     }
+
     bool menuChoice(string choice)
     {
         for (int i = 0; i < choice.size(); ++i)
@@ -86,7 +90,85 @@ public:
         }
         return true;
     }
+
+    void passLogic(string &password, string promptText)
+    {
+        char pass[32] = {0};
+        char ch;
+        bool enter = false;
+        int i = 0;
+        bool show = false;
+
+        cout << promptText;
+
+        while (!enter)
+        {
+            ch = _getch();
+
+            if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'))
+            {
+                pass[i] = ch;
+                if (show)
+                {
+                    cout << ch;
+                }
+                else
+                {
+                    cout << "*";
+                }
+                i++;
+            }
+
+            if (ch == '\b' && i >= 1)
+            {
+                cout << "\b \b";
+                i--;
+            }
+
+            if (ch == '\r')
+            {
+                enter = true;
+            }
+
+            if (ch == '\t')
+            {
+                show = !show;
+                cout << "\r" << promptText;
+                for (int j = 0; j < i; j++)
+                {
+                    cout << (show ? pass[j] : '*');
+                }
+            }
+        }
+
+        pass[i] = '\0';
+        password = pass;
+    }
+
+    bool idValidation(string idString)
+    {
+        for (int i = 0; i < idString.size(); ++i)
+        {
+            if (!isdigit(idString[i]))
+            {
+                return false;
+            }
+        }
+        if (idString.empty())
+        {
+            return false;
+        }
+        for (int i = 0; i < idString.size(); ++i)
+        {
+            if (idString[i] == ' ')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 };
+ErrorHandling errorHandler;
 
 int main()
 {
@@ -98,7 +180,7 @@ int main()
     cout << "\t\t| [3]   |     Admin Panel" << setw(24) << "|\n";
     cout << "\t\t| [4]   |     Search Events" << setw(22) << "|\n";
     cout << "\t\t| [5]   |     Exit" << setw(31) << "|\n";
-    cout << "\t\t||_|\n";
+    cout << "\t\t|_______|______________________________________|\n";
 
     return 0;
 }
