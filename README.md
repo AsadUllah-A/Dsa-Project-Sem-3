@@ -1,0 +1,1 @@
+cout<<"asadullah"<<endl;
