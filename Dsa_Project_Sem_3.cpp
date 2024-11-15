@@ -2,6 +2,32 @@
 #include <iomanip>
 
 using namespace std;
+class ErrorHandling
+{
+public:
+    bool menuChoice(string choice)
+    {
+        for (int i = 0; i < choice.size(); ++i)
+        {
+            if (!isdigit(choice[i]))
+            {
+                return false;
+            }
+        }
+        if (choice.empty())
+        {
+            return false;
+        }
+        for (int i = 0; i < choice.size(); ++i)
+        {
+            if (choice[i] == ' ')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};
 
 int main()
 {
