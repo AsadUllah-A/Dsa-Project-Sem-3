@@ -44,6 +44,26 @@ public:
         }
         return true;
     }
+    bool passwordValidation(const string &str)
+    {
+        bool isLengthValid = str.length() >= 6;
+
+        if (!isLengthValid)
+        {
+            cout << "\n\n\tPassword must be at least 6 characters long.\n\n";
+        }
+
+        return isLengthValid;
+    }
+
+    bool nameValidation(string str)
+    {
+        if (str.empty())
+        {
+            return false;
+        }
+        return true;
+    }
     bool menuChoice(string choice)
     {
         for (int i = 0; i < choice.size(); ++i)
