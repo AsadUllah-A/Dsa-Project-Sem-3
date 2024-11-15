@@ -14,7 +14,7 @@ int main()
     cout << "\t\t| [4]   |     Search Events" << setw(22) << "|\n";
     cout << "\t\t| [5]   |     Exit" << setw(31) << "|\n";
     cout << "\t\t||_|\n";
-	cout<<"AHMED"
+	
 
     return 0;
 }
