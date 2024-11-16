@@ -172,7 +172,7 @@ ErrorHandling errorHandler;
 
 int main()
 {
-    cout << "\n\n\t**** Event Ticket Reservation System ****\n";
+    cout << "\n\n\t\t    **** Event Ticket Reservation System ****\n";
     cout << "\n\t\t ______________________________________________\n";
     cout << "\t\t|       |" << setw(40) << "|\n";
     cout << "\t\t| [1]   |     Sign Up" << setw(28) << "|\n";
