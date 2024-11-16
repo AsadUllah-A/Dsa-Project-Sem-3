@@ -428,7 +428,6 @@ void buyTickets(const string &username)
                 cout << "Number of tickets must be a positive integer.\n";
                 continue;
             }
-
             numberOfTickets = stoi(numberOfTicketsStr);
 
             if (choice == "1")
