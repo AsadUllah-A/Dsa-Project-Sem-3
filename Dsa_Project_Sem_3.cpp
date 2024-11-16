@@ -170,8 +170,62 @@ public:
 };
 ErrorHandling errorHandler;
 
+void setupDefaultAdmin()
+{
+    string defaultAdminUsername1 = "asad";
+    string defaultAdminPassword1 = "55181";
+    string defaultAdminEmail1 = "admin1@example.com";
+
+    if (users.find(defaultAdminUsername1) == users.end())
+    {
+        User adminUser = {defaultAdminUsername1, defaultAdminPassword1, defaultAdminEmail1, {}};
+        users[defaultAdminUsername1] = adminUser;
+        admins[defaultAdminUsername1] = true;
+        cout << "Default admin account created successfully!\n";
+    }
+    else
+    {
+        cout << "Default admin already exists.\n";
+    }
+
+    string defaultAdminUsername2 = "ahmed";
+    string defaultAdminPassword2 = "55223";
+    string defaultAdminEmail2 = "admin2@example.com";
+
+    if (users.find(defaultAdminUsername2) == users.end())
+    {
+        User adminUser = {defaultAdminUsername2, defaultAdminPassword2, defaultAdminEmail2, {}};
+        users[defaultAdminUsername2] = adminUser;
+        admins[defaultAdminUsername2] = true;
+        cout << "Default admin account created successfully!\n";
+    }
+    else
+    {
+        cout << "Default admin already exists.\n";
+    }
+
+    string defaultAdminUsername3 = "irtaza";
+    string defaultAdminPassword3 = "55181";
+    string defaultAdminEmail3 = "admin3@example.com";
+
+    if (users.find(defaultAdminUsername3) == users.end())
+    {
+        User adminUser = {defaultAdminUsername3, defaultAdminPassword3, defaultAdminEmail3, {}};
+        users[defaultAdminUsername3] = adminUser;
+        admins[defaultAdminUsername3] = true;
+        cout << "Default admin account created successfully!\n";
+    }
+    else
+    {
+        cout << "Default admin already exists.\n";
+    }
+}
+
 int main()
 {
+    setupDefaultAdmin();
+    while (true)
+    {
     cout << "\n\n\t\t    **** Event Ticket Reservation System ****\n";
     cout << "\n\t\t ______________________________________________\n";
     cout << "\t\t|       |" << setw(40) << "|\n";
@@ -181,6 +235,45 @@ int main()
     cout << "\t\t| [4]   |     Search Events" << setw(22) << "|\n";
     cout << "\t\t| [5]   |     Exit" << setw(31) << "|\n";
     cout << "\t\t|_______|______________________________________|\n";
+    
+    string choice;
+        while (true)
+        {
+            cout << "Enter your choice: ";
+            getline(cin, choice);
+            if (errorHandler.menuChoice(choice))
+            {
+                break;
+            }
+            cout << "\n\tInvalid option! Please try again.\n\n";
+        }
 
+        if (choice == "1")
+        {
+            signup();
+        }
+        else if (choice == "2")
+        {
+            login();
+        }
+        else if (choice == "4")
+        {
+            searchEvents();
+        }
+        else if (choice == "3")
+        {
+            displayAdminMenu();
+        }
+        else if (choice == "5")
+
+        {
+            cout << "\n\tExiting... Have a great day!\n";
+            break;
+        }
+        else
+        {
+            cout << "\n\tInvalid option! Please try again.\n";
+        }
+    }
     return 0;
 }
