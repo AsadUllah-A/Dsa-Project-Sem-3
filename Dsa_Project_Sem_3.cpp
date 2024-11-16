@@ -1,7 +1,9 @@
 #include <iostream>
 #include <conio.h>
 #include <iomanip>
-
+#include <string>
+#include <queue>
+#include <unordered_map>
 using namespace std;
 
 class ErrorHandling
@@ -169,7 +171,30 @@ public:
     }
 };
 ErrorHandling errorHandler;
+struct User
+{
+    string username;
+    string password;
+    string email;
+    unordered_map<int, int> tickets;              
+    unordered_map<int, int> canceledVipTickets;     
+    unordered_map<int, int> canceledRegularTickets;
+};
 
+struct Event
+{
+    int eventId;
+    string eventName;
+    int totalSeats;
+    int vipSeats;
+    int regularSeats;
+    priority_queue<int> vipSeatsQueue;                               
+    priority_queue<int, vector<int>, greater<int>> regularSeatsQueue; 
+    Event() : eventId(0), eventName(""), totalSeats(0), vipSeats(0), regularSeats(0){}
+
+    Event(int id, const string &name, int total, int vip, int regular)
+        : eventId(id), eventName(name), totalSeats(total), vipSeats(vip), regularSeats(regular) {}
+};
 void setupDefaultAdmin()
 {
     string defaultAdminUsername1 = "asad";
