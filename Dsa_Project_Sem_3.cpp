@@ -278,7 +278,9 @@ void displayAllUserData()
 
         cout << "-------------------------------\n";
     }
-    void updateUserProfile(const string &username)
+}
+
+void updateUserProfile(const string &username)
 {
     if (users.find(username) == users.end())
     {
@@ -296,8 +298,7 @@ void displayAllUserData()
         cout << "\t\t| [2]   |     Update Password" << setw(20) << "|\n";
         cout << "\t\t| [3]   |     Update Email" << setw(23) << "|\n";
         cout << "\t\t| [4]   |     Exit" << setw(31) << "|\n";
-        cout << "\t\t||_|\n";
-
+        cout << "\n\t\t ______________________________________________\n";
         while (true)
         {
             cout << "Enter your choice: ";
@@ -367,7 +368,157 @@ void displayAllUserData()
         }
     }
 }
+
+void signup()
+{
+    string username, password, email;
+
+    while (true)
+    {
+
+        while (true)
+        {
+            cout << "\nEnter Username: ";
+            getline(cin, username);
+            if (errorHandler.nameValidation(username))
+            {
+                break;
+            }
+            else
+            {
+                cout << "\n\n\tInvalid Username. Please try again.\n";
+            }
+        }
+
+        string lowerUsername = toLowerCase(username);
+
+        bool usernameExists = false;
+        for (const auto &user : users)
+        {
+            if (toLowerCase(user.first) == lowerUsername)
+            {
+                usernameExists = true;
+                break;
+            }
+        }
+
+        if (usernameExists)
+        {
+            cout << "\n\tUsername already exists. Please try again.\n";
+            continue;
+        }
+
+        if (errorHandler.nameValidation(username))
+        {
+            break;
+        }
+        else
+        {
+            cout << "\n\tInvalid Username. Please try again.\n";
+        }
+    }
+
+    while (true)
+    {
+        errorHandler.passLogic(password, "Enter Password: ");
+        if (errorHandler.passwordValidation(password))
+        {
+            break;
+        }
+    }
+
+    while (true)
+    {
+        cout << "\nEnter Valid Email: ";
+        getline(cin, email);
+
+        string lowerEmail = toLowerCase(email);
+
+        bool emailExists = false;
+        for (const auto &user : users)
+        {
+            if (toLowerCase(user.second.email) == lowerEmail)
+            {
+                emailExists = true;
+                break;
+            }
+        }
+
+        if (emailExists)
+        {
+            cout << "\n\tEmail already exists. Please try again.\n";
+            continue;
+        }
+
+        if (errorHandler.emailValidation(email))
+        {
+            break;
+        }
+        else
+        {
+            cout << "\n\tInvalid Email. Please try again.\n";
+        }
+    }
+
+    User newUser = {username, password, email, {}};
+    users[username] = newUser;
+
+    cout << "\n\tSignup Successfully!";
 }
+
+void login()
+{
+    string username, password;
+    while (true)
+    {
+        cout << "\nEnter Username: ";
+        getline(cin, username);
+        if (errorHandler.nameValidation(username))
+        {
+            break;
+        }
+        else
+        {
+            cout << "\n\n\tInvalid Username. Please try again.\n";
+        }
+    }
+
+    errorHandler.passLogic(password, "Enter Password: ");
+    string lowerUsername = toLowerCase(username);
+    bool userFound = false;
+    for (const auto &user : users)
+    {
+        if (toLowerCase(user.first) == lowerUsername && user.second.password == password)
+        {
+            userFound = true;
+            cout << "\n\n\tWelcome, " << user.first << ".\n";
+            displayUserMenu(user.first);
+            break;
+        }
+    }
+
+    if (!userFound)
+    {
+        cout << "\n\n\tInvalid username or password!\n";
+    }
+}
+
+void viewAllUsers()
+{
+    if (users.empty())
+    {
+        cout << "\nNo users are registered yet.\n";
+    }
+    else
+    {
+        cout << "\nRegistered Users:\n";
+        for (const auto &user : users)
+        {
+            cout << "Username: " << user.second.username << ", Email: " << user.second.email << "\n";
+        }
+    }
+}
+
 void buyTickets(const string &username)
 {
     if (events.empty())
