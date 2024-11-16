@@ -171,13 +171,14 @@ public:
     }
 };
 ErrorHandling errorHandler;
+
 struct User
 {
     string username;
     string password;
     string email;
-    unordered_map<int, int> tickets;              
-    unordered_map<int, int> canceledVipTickets;     
+    unordered_map<int, int> tickets;
+    unordered_map<int, int> canceledVipTickets;
     unordered_map<int, int> canceledRegularTickets;
 };
 
@@ -188,13 +189,14 @@ struct Event
     int totalSeats;
     int vipSeats;
     int regularSeats;
-    priority_queue<int> vipSeatsQueue;                               
-    priority_queue<int, vector<int>, greater<int>> regularSeatsQueue; 
-    Event() : eventId(0), eventName(""), totalSeats(0), vipSeats(0), regularSeats(0){}
+    priority_queue<int> vipSeatsQueue;
+    priority_queue<int, vector<int>, greater<int>> regularSeatsQueue;
+    Event() : eventId(0), eventName(""), totalSeats(0), vipSeats(0), regularSeats(0) {}
 
     Event(int id, const string &name, int total, int vip, int regular)
         : eventId(id), eventName(name), totalSeats(total), vipSeats(vip), regularSeats(regular) {}
 };
+
 unordered_map<string, User> users;
 unordered_map<int, Event> events;
 unordered_map<string, bool> admins;
@@ -218,8 +220,66 @@ void removeAdmin();
 void updateadminPanel(const string &adminUsername);
 void updateAdminPassword(const string &adminUsername);
 void displayAdminMenu();
-void displayAllEvents(); 
+void displayAllEvents();
 void displayAllUserData();
+
+void displayAllUserData()
+{
+    if (users.empty())
+    {
+        cout << "No users available.\n";
+        return;
+    }
+
+    cout << "User Data:\n";
+    for (const auto &userPair : users)
+    {
+        const string &username = userPair.first;
+        const User &user = userPair.second;
+
+        if (admins.find(username) != admins.end() && admins.at(username))
+        {
+            continue;
+        }
+
+        cout << "Username: " << user.username << "\nEmail: " << user.email << "\nTickets:\n";
+
+        if (user.tickets.empty())
+        {
+            cout << "  No tickets bought.\n";
+        }
+        else
+        {
+            for (const auto &ticketPair : user.tickets)
+            {
+                int eventID = ticketPair.first;
+                int totalTickets = ticketPair.second;
+
+                int vipTickets = 0;
+                int regularTickets = 0;
+                const Event &event = events.at(eventID);
+
+                if (user.canceledVipTickets.find(eventID) != user.canceledVipTickets.end())
+                {
+                    vipTickets = user.canceledVipTickets.at(eventID);
+                }
+
+                if (user.canceledRegularTickets.find(eventID) != user.canceledRegularTickets.end())
+                {
+                    regularTickets = user.canceledRegularTickets.at(eventID);
+                }
+
+                cout << "\nEvent ID: " << eventID
+                     << ",\tEvent Name: " << event.eventName
+                     << ",\tVIP Tickets: " << vipTickets
+                     << ",\tRegular Tickets: " << regularTickets << '\n';
+            }
+        }
+
+        cout << "-------------------------------\n";
+    }
+}
+
 string toLowerCase(const string &str)
 {
     string lowerStr = str; // Create a copy to modify
@@ -229,6 +289,7 @@ string toLowerCase(const string &str)
     }
     return lowerStr;
 }
+
 void setupDefaultAdmin()
 {
     string defaultAdminUsername1 = "asad";
@@ -285,17 +346,17 @@ int main()
     setupDefaultAdmin();
     while (true)
     {
-    cout << "\n\n\t\t    **** Event Ticket Reservation System ****\n";
-    cout << "\n\t\t ______________________________________________\n";
-    cout << "\t\t|       |" << setw(40) << "|\n";
-    cout << "\t\t| [1]   |     Sign Up" << setw(28) << "|\n";
-    cout << "\t\t| [2]   |     Login" << setw(30) << "|\n";
-    cout << "\t\t| [3]   |     Admin Panel" << setw(24) << "|\n";
-    cout << "\t\t| [4]   |     Search Events" << setw(22) << "|\n";
-    cout << "\t\t| [5]   |     Exit" << setw(31) << "|\n";
-    cout << "\t\t|_______|______________________________________|\n";
-    
-    string choice;
+        cout << "\n\n\t\t    **** Event Ticket Reservation System ****\n";
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Sign Up" << setw(28) << "|\n";
+        cout << "\t\t| [2]   |     Login" << setw(30) << "|\n";
+        cout << "\t\t| [3]   |     Admin Panel" << setw(24) << "|\n";
+        cout << "\t\t| [4]   |     Search Events" << setw(22) << "|\n";
+        cout << "\t\t| [5]   |     Exit" << setw(31) << "|\n";
+        cout << "\t\t|_______|______________________________________|\n";
+
+        string choice;
         while (true)
         {
             cout << "Enter your choice: ";
