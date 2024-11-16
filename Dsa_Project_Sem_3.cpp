@@ -765,6 +765,109 @@ void cancelTicket(const string &username)
         }
     }
 }
+void viewTickets(const string &username)
+{
+    if (users.find(username) == users.end())
+    {
+        cout << "User not found.\n";
+        return;
+    }
+
+    const User &user = users[username];
+
+    if (user.tickets.empty())
+    {
+        cout << "You have not purchased any tickets.\n";
+        return;
+    }
+
+    cout << "Your tickets:\n";
+    for (const auto &ticket : user.tickets)
+    {
+        int eventID = ticket.first;
+        int totalTickets = ticket.second;
+        if (events.find(eventID) == events.end())
+        {
+            cout << "Event ID " << eventID << " has been deleted and no longer exists.\n";
+            continue;
+        }
+
+        int vipTickets = 0;
+        int regularTickets = 0;
+
+        if (user.canceledVipTickets.find(eventID) != user.canceledVipTickets.end())
+        {
+            vipTickets = user.canceledVipTickets.at(eventID);
+        }
+
+        if (user.canceledRegularTickets.find(eventID) != user.canceledRegularTickets.end())
+        {
+            regularTickets = user.canceledRegularTickets.at(eventID);
+        }
+
+        cout << "\nEvent ID: " << eventID
+             << ",\tEvent Name: " << events[eventID].eventName
+             << ",\tVIP Tickets: " << vipTickets
+             << ",\tRegular Tickets: " << regularTickets << '\n';
+    }
+}
+
+void displayUserMenu(const string &username)
+{
+    while (true)
+    {
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Buy Tickets" << setw(24) << "|\n";
+        cout << "\t\t| [2]   |     View Tickets" << setw(23) << "|\n";
+        cout << "\t\t| [3]   |     Cancel Tickets" << setw(21) << "|\n";
+        cout << "\t\t| [4]   |     View All Events" << setw(20) << "|\n";
+        cout << "\t\t| [5]   |     Update Profile" << setw(21) << "|\n";
+        cout << "\t\t| [0]   |     Exit" << setw(31) << "|\n";
+        cout << "\t\t||_|\n";
+
+        string option;
+        while (true)
+        {
+            cout << "Enter your choice: ";
+            getline(cin, option);
+            if (errorHandler.menuChoice(option))
+            {
+                break;
+            }
+            cout << "\n\tInvalid option! Please try again.\n\n";
+        }
+        if (option == "1")
+        {
+            buyTickets(username);
+        }
+        else if (option == "2")
+        {
+            viewTickets(username);
+        }
+        else if (option == "3")
+        {
+            cancelTicket(username);
+        }
+        else if (option == "4")
+        {
+            displayAllEvents();
+        }
+        else if (option == "5")
+        {
+            updateUserProfile(username);
+        }
+        else if (option == "0")
+        {
+            cout << "Exit User Panel\n";
+            break;
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
 string toLowerCase(const string &str)
 {
     string lowerStr = str; // Create a copy to modify
