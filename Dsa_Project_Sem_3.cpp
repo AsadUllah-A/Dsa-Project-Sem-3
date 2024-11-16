@@ -218,7 +218,7 @@ void removeAdmin();
 void updateadminPanel(const string &adminUsername);
 void updateAdminPassword(const string &adminUsername);
 void displayAdminMenu();
-void displayAllEvents();
+void displayAllEvents(); 
 void displayAllUserData();
 string toLowerCase(const string &str)
 {
