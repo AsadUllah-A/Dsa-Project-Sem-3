@@ -195,6 +195,40 @@ struct Event
     Event(int id, const string &name, int total, int vip, int regular)
         : eventId(id), eventName(name), totalSeats(total), vipSeats(vip), regularSeats(regular) {}
 };
+unordered_map<string, User> users;
+unordered_map<int, Event> events;
+unordered_map<string, bool> admins;
+void setupDefaultAdmin();
+void updateUserProfile(const string &username);
+void signup();
+void login();
+bool adminLogin(string &loggedInAdmin);
+void searchEvents();
+bool adminLogin();
+void buyTickets(const string &username);
+void viewTickets(const string &username);
+void cancelTicket(const string &username);
+void addEvent();
+void updateEvent();
+void manageTickets();
+void viewAllUsers();
+void displayUserMenu(const string &username);
+void addNewAdmin();
+void removeAdmin();
+void updateadminPanel(const string &adminUsername);
+void updateAdminPassword(const string &adminUsername);
+void displayAdminMenu();
+void displayAllEvents();
+void displayAllUserData();
+string toLowerCase(const string &str)
+{
+    string lowerStr = str; // Create a copy to modify
+    for (int i = 0; i < lowerStr.length(); i++)
+    {
+        lowerStr[i] = tolower(lowerStr[i]);
+    }
+    return lowerStr;
+}
 void setupDefaultAdmin()
 {
     string defaultAdminUsername1 = "asad";
