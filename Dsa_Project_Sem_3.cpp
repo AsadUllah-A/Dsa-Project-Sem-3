@@ -503,6 +503,58 @@ void login()
     }
 }
 
+bool adminLogin(string &loggedInAdmin)
+{
+    string username, password;
+    while (true)
+    {
+        cout << "\nEnter Admin Username: ";
+        getline(cin, username);
+        if (errorHandler.nameValidation(username))
+        {
+            break;
+        }
+        else
+        {
+            cout << "\n\n\tInvalid Username. Please try again.\n";
+        }
+    }
+    errorHandler.passLogic(password, "Enter Admin Password: ");
+
+    if (admins.find(username) == admins.end())
+    {
+        cout << "\n\n\tAdmin not found.\n";
+        return false;
+    }
+    if (users[username].password != password)
+    {
+        cout << "Incorrect password.\n";
+        return false;
+    }
+
+    loggedInAdmin = username;
+    return true;
+}
+
+void updateAdminPassword(const string &adminUsername)
+{
+    if (admins.find(adminUsername) == admins.end())
+    {
+        cout << "You must be an admin to access this feature.\n";
+        return;
+    }
+
+    string newPassword;
+    while (true)
+    {
+        errorHandler.passLogic(newPassword, "Enter new Password: ");
+        if (errorHandler.passwordValidation(newPassword))
+            break;
+    }
+    users[adminUsername].password = newPassword;
+    cout << "\n\n\tPassword updated successfully!\n";
+}
+
 void viewAllUsers()
 {
     if (users.empty())
