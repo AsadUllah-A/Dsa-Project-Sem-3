@@ -626,7 +626,98 @@ void displayAdminMenu()
         cout << "\t\t| [7]   |     Manage Admin" << setw(23) << "|\n";
         cout << "\t\t| [0]   |     Exit" << setw(31) << "|\n";
         cout << "\t\t||_|\n";
+void updateadminPanel(const string &adminUsername)
+{
+    if (admins.find(adminUsername) == admins.end())
+    {
+        cout << "\n\tAccess Denied. Only admins can access this panel.\n";
+        return;
+    }
 
+    while (true)
+    {
+        cout << "\n\t\t ________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Update own Password" << setw(16) << "|\n";
+        cout << "\t\t| [2]   |     Add New Admin" << setw(22) << "|\n";
+        cout << "\t\t| [3]   |     Remove an Admin" << setw(20) << "|\n";
+        cout << "\t\t| [4]   |     Exit Admin Panel" << setw(19) << "|\n";
+        cout << "\t\t|__|_____________|\n";
+
+        string option;
+        while (true)
+        {
+            cout << "Enter your choice: ";
+            getline(cin, option);
+            if (errorHandler.menuChoice(option))
+            {
+                break;
+            }
+            cout << "\n\tInvalid option! Please try again.\n\n";
+        }
+
+        if (option == "1")
+        {
+            updateAdminPassword(adminUsername);
+        }
+        else if (option == "2")
+        {
+            addNewAdmin();
+        }
+        else if (option == "3")
+        {
+            removeAdmin();
+        }
+        else if (option == "4")
+        {
+            cout << "\nExiting Update Admin Panel...\n";
+            break;
+        }
+        else
+        {
+            cout << "\n\tInvalid choice. Please try again.\n";
+        }
+    }
+}
+
+void searchEvents()
+{
+    if (events.empty())
+    {
+        cout << "No events available to search.\n";
+        return;
+    }
+
+    string query;
+    cout << "Enter event name to search: ";
+    getline(cin, query);
+
+    bool found = false;
+    cout << "Search results:\n";
+    for (const auto &event : events)
+    {
+        int eventID = event.first;
+        const Event &e = event.second;
+        if (e.eventName.find(query) != string::npos)
+        {
+            cout << "Event ID: " << eventID << ", Event Name: " << e.eventName << '\n';
+            if (e.vipSeatsQueue.empty() && e.regularSeatsQueue.empty())
+            {
+                cout << "No seats left.\n";
+            }
+            else
+            {
+                cout << "VIP Seats Available: " << e.vipSeatsQueue.size() << ", Regular Seats Available: " << e.regularSeatsQueue.size() << "\n";
+            }
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "No events found matching the query.\n";
+    }
+}
         string option;
         while (true)
         {
