@@ -213,6 +213,16 @@ void displayAdminMenu();
 void displayAllEvents();
 void displayAllUserData();
 
+string toLowerCase(const string &str)
+{
+    string lowerStr = str; // Create a copy to modify
+    for (int i = 0; i < lowerStr.length(); i++)
+    {
+        lowerStr[i] = tolower(lowerStr[i]);
+    }
+    return lowerStr;
+}
+
 void displayAllUserData()
 {
     if (users.empty())
@@ -650,23 +660,26 @@ void updateadminPanel(const string &adminUsername)
     }
 }
 
-void updateadminPanel(const string &adminUsername)
+void displayAdminMenu()
 {
-    if (admins.find(adminUsername) == admins.end())
+    string loggedInAdmin;
+    if (!adminLogin(loggedInAdmin))
     {
-        cout << "\n\tAccess Denied. Only admins can access this panel.\n";
-        return;
+        return; 
     }
-
     while (true)
     {
-        cout << "\n\t\t ________________\n";
+        cout << "\n\t\t ______________________________________________\n";
         cout << "\t\t|       |" << setw(40) << "|\n";
-        cout << "\t\t| [1]   |     Update own Password" << setw(16) << "|\n";
-        cout << "\t\t| [2]   |     Add New Admin" << setw(22) << "|\n";
-        cout << "\t\t| [3]   |     Remove an Admin" << setw(20) << "|\n";
-        cout << "\t\t| [4]   |     Exit Admin Panel" << setw(19) << "|\n";
-        cout << "\t\t|__|_____________|\n";
+        cout << "\t\t| [1]   |     Add Event" << setw(26) << "|\n";
+        cout << "\t\t| [2]   |     Update Event" << setw(23) << "|\n";
+        cout << "\t\t| [3]   |     Manage Tickets" << setw(21) << "|\n";
+        cout << "\t\t| [4]   |     View All Users" << setw(21) << "|\n";
+        cout << "\t\t| [5]   |     View All Events" << setw(20) << "|\n";
+        cout << "\t\t| [6]   |     View All Users Data" << setw(16) << "|\n";
+        cout << "\t\t| [7]   |     Manage Admin" << setw(23) << "|\n";
+        cout << "\t\t| [0]   |     Exit" << setw(31) << "|\n";
+        cout << "\t\t|_______|______________________________________|\n";
 
         string option;
         while (true)
@@ -682,64 +695,41 @@ void updateadminPanel(const string &adminUsername)
 
         if (option == "1")
         {
-            updateAdminPassword(adminUsername);
+            addEvent();
         }
         else if (option == "2")
         {
-            addNewAdmin();
+            updateEvent();
         }
         else if (option == "3")
         {
-            removeAdmin();
+            manageTickets();
         }
         else if (option == "4")
         {
-            cout << "\nExiting Update Admin Panel...\n";
+            viewAllUsers();
+        }
+        else if (option == "5")
+        {
+            displayAllEvents();
+        }
+        else if (option == "6")
+        {
+            displayAllUserData();
+        }
+        else if (option == "7")
+        {
+            updateadminPanel(loggedInAdmin);
+        }
+        else if (option == "0")
+        {
+            cout << "Exit User Panel\n";
             break;
         }
         else
         {
-            cout << "\n\tInvalid choice. Please try again.\n";
+            cout << "Invalid choice. Please try again.\n";
         }
-    }
-}
-
-void searchEvents()
-{
-    if (events.empty())
-    {
-        cout << "No events available to search.\n";
-        return;
-    }
-
-    string query;
-    cout << "Enter event name to search: ";
-    getline(cin, query);
-
-    bool found = false;
-    cout << "Search results:\n";
-    for (const auto &event : events)
-    {
-        int eventID = event.first;
-        const Event &e = event.second;
-        if (e.eventName.find(query) != string::npos)
-        {
-            cout << "Event ID: " << eventID << ", Event Name: " << e.eventName << '\n';
-            if (e.vipSeatsQueue.empty() && e.regularSeatsQueue.empty())
-            {
-                cout << "No seats left.\n";
-            }
-            else
-            {
-                cout << "VIP Seats Available: " << e.vipSeatsQueue.size() << ", Regular Seats Available: " << e.regularSeatsQueue.size() << "\n";
-            }
-            found = true;
-        }
-    }
-
-    if (!found)
-    {
-        cout << "No events found matching the query.\n";
     }
 }
 
@@ -1516,16 +1506,6 @@ void displayUserMenu(const string &username)
             cout << "Invalid choice. Please try again.\n";
         }
     }
-}
-
-string toLowerCase(const string &str)
-{
-    string lowerStr = str; // Create a copy to modify
-    for (int i = 0; i < lowerStr.length(); i++)
-    {
-        lowerStr[i] = tolower(lowerStr[i]);
-    }
-    return lowerStr;
 }
 
 void setupDefaultAdmin()
