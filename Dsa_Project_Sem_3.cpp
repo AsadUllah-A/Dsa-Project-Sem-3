@@ -555,6 +555,78 @@ void updateAdminPassword(const string &adminUsername)
     cout << "\n\n\tPassword updated successfully!\n";
 }
 
+void addNewAdmin()
+{
+    string newAdminUsername, password, email;
+    while (true)
+    {
+        cout << "\nEnter new admin's Username: ";
+        getline(cin, newAdminUsername);
+        if (errorHandler.nameValidation(newAdminUsername) && admins.find(newAdminUsername) == admins.end())
+            break;
+        cout << "\n\tInvalid Username. Please try again.\n";
+    }
+
+    while (true)
+    {
+        errorHandler.passLogic(password, "Enter new admin's Password: ");
+        if (errorHandler.passwordValidation(password))
+            break;
+    }
+
+    while (true)
+    {
+        cout << "\nEnter new admin's Valid Email: ";
+        getline(cin, email);
+        if (errorHandler.emailValidation(email))
+            break;
+        cout << "\n\tInvalid Email. Please try again.\n";
+    }
+
+    User newAdmin = {newAdminUsername, password, email, {}};
+    users[newAdminUsername] = newAdmin;
+    admins[newAdminUsername] = true;
+    cout << "\n\tNew admin added successfully!\n";
+}
+
+void removeAdmin()
+{
+    string targetAdminUsername;
+    cout << "\nEnter the username of the admin to remove: ";
+    getline(cin, targetAdminUsername);
+
+    if (admins.find(targetAdminUsername) != admins.end())
+    {
+        admins.erase(targetAdminUsername);
+        users.erase(targetAdminUsername);
+        cout << "\n\tAdmin removed successfully!\n";
+    }
+    else
+    {
+        cout << "\n\tAdmin not found or cannot be removed.\n";
+    }
+}
+
+void displayAllEvents()
+{
+    if (events.empty())
+    {
+        cout << "No events available.\n";
+        return;
+    }
+
+    cout << "All events:\n";
+    for (const auto &event : events)
+    {
+        int eventID = event.first;
+        const Event &e = event.second;
+        cout << "Event ID: " << eventID
+             << ", Event Name: " << e.eventName
+             << ", VIP Seats Available: " << e.vipSeatsQueue.size()
+             << ", Regular Seats Available: " << e.regularSeatsQueue.size() << '\n';
+    }
+}
+
 void viewAllUsers()
 {
     if (users.empty())
