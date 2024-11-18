@@ -12,12 +12,10 @@ public:
     bool emailValidation(const string &email)
     {
         const string gmailSuffix = "@gmail.com";
-
         if (email.empty())
         {
             return false;
         }
-
         for (char ch : email)
         {
             if (isspace(ch))
@@ -25,7 +23,6 @@ public:
                 return false;
             }
         }
-
         if (email.size() <= gmailSuffix.size() + 4)
         {
             return false;
@@ -38,7 +35,6 @@ public:
         {
             return false;
         }
-
         for (char ch : prefix)
         {
             if (!islower(ch) && !isdigit(ch) && ch != '.' && ch != '_' && ch != '-')
@@ -57,7 +53,6 @@ public:
         {
             cout << "\n\n\tPassword must be at least 6 characters long.\n\n";
         }
-
         return isLengthValid;
     }
 
@@ -100,13 +95,11 @@ public:
         bool enter = false;
         int i = 0;
         bool show = false;
-
         cout << promptText;
 
         while (!enter)
         {
             ch = _getch();
-
             if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'))
             {
                 pass[i] = ch;
@@ -120,18 +113,15 @@ public:
                 }
                 i++;
             }
-
             if (ch == '\b' && i >= 1)
             {
                 cout << "\b \b";
                 i--;
             }
-
             if (ch == '\r')
             {
                 enter = true;
             }
-
             if (ch == '\t')
             {
                 show = !show;
@@ -230,7 +220,6 @@ void displayAllUserData()
         cout << "No users available.\n";
         return;
     }
-
     cout << "User Data:\n";
     for (const auto &userPair : users)
     {
@@ -606,26 +595,7 @@ void removeAdmin()
         cout << "\n\tAdmin not found or cannot be removed.\n";
     }
 }
-void displayAdminMenu()
-{
-    string loggedInAdmin;
-    if (!adminLogin(loggedInAdmin))
-    {
-        return;
-    }
-    while (true)
-    {
-        cout << "\n\t\t ______________________________________________\n";
-        cout << "\t\t|       |" << setw(40) << "|\n";
-        cout << "\t\t| [1]   |     Add Event" << setw(26) << "|\n";
-        cout << "\t\t| [2]   |     Update Event" << setw(23) << "|\n";
-        cout << "\t\t| [3]   |     Manage Tickets" << setw(21) << "|\n";
-        cout << "\t\t| [4]   |     View All Users" << setw(21) << "|\n";
-        cout << "\t\t| [5]   |     View All Events" << setw(20) << "|\n";
-        cout << "\t\t| [6]   |     View All Users Data" << setw(16) << "|\n";
-        cout << "\t\t| [7]   |     Manage Admin" << setw(23) << "|\n";
-        cout << "\t\t| [0]   |     Exit" << setw(31) << "|\n";
-        cout << "\t\t||_|\n";
+
 void updateadminPanel(const string &adminUsername)
 {
     if (admins.find(adminUsername) == admins.end())
@@ -680,6 +650,8 @@ void updateadminPanel(const string &adminUsername)
     }
 }
 
+
+
 void searchEvents()
 {
     if (events.empty())
@@ -718,57 +690,7 @@ void searchEvents()
         cout << "No events found matching the query.\n";
     }
 }
-        string option;
-        while (true)
-        {
-            cout << "Enter your choice: ";
-            getline(cin, option);
-            if (errorHandler.menuChoice(option))
-            {
-                break;
-            }
-            cout << "\n\tInvalid option! Please try again.\n\n";
-        }
 
-        if (option == "1")
-        {
-            addEvent();
-        }
-        else if (option == "2")
-        {
-            updateEvent();
-        }
-        else if (option == "3")
-        {
-            manageTickets();
-        }
-        else if (option == "4")
-        {
-            viewAllUsers();
-        }
-        else if (option == "5")
-        {
-            displayAllEvents();
-        }
-        else if (option == "6")
-        {
-            displayAllUserData();
-        }
-        else if (option == "7")
-        {
-            updateadminPanel(loggedInAdmin);
-        }
-        else if (option == "0")
-        {
-            cout << "Exit User Panel\n";
-            break;
-        }
-        else
-        {
-            cout << "Invalid choice. Please try again.\n";
-        }
-    }
-}
 void displayAllEvents()
 {
     if (events.empty())
@@ -924,6 +846,7 @@ void buyTickets(const string &username)
         }
     }
 }
+
 void cancelTicket(const string &username)
 {
     string eventIDStr;
@@ -1051,6 +974,7 @@ void cancelTicket(const string &username)
         }
     }
 }
+
 void viewTickets(const string &username)
 {
     if (users.find(username) == users.end())
@@ -1097,6 +1021,7 @@ void viewTickets(const string &username)
              << ",\tRegular Tickets: " << regularTickets << '\n';
     }
 }
+
 void addEvent()
 {
     string eventIDStr, totalSeatsStr, vipSeatsStr;
@@ -1275,6 +1200,7 @@ void updateEvent()
         }
     }
 }
+
 void manageTickets()
 {
     string eventIDStr;
@@ -1443,6 +1369,7 @@ void manageTickets()
         cout << "Available VIP seats: " << event.vipSeatsQueue.size() << ", Available Regular seats: " << event.regularSeatsQueue.size() << "\n";
     }
 }
+
 void displayUserMenu(const string &username)
 {
     while (true)
@@ -1499,6 +1426,7 @@ void displayUserMenu(const string &username)
         }
     }
 }
+
 string toLowerCase(const string &str)
 {
     string lowerStr = str; // Create a copy to modify
