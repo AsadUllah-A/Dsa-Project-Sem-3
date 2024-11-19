@@ -1,19 +1,19 @@
 #include <iostream>
-#include <conio.h> // For `_getch` to capture user input without echo
-#include <iomanip> // For formatted output (e.g., setting width in console)
-#include <string>  // For working with strings
-#include <queue>   // For using priority queues
-#include <unordered_map>   // For hash table-based key-value data structure
-using namespace std;    // To avoid writing `std::` repeatedly
+#include <conio.h>       // For `_getch` to capture user input without echo
+#include <iomanip>       // For formatted output (e.g., setting width in console)
+#include <string>        // For working with strings
+#include <queue>         // For using priority queues
+#include <unordered_map> // For hash table-based key-value data structure
+using namespace std;     // To avoid writing `std::` repeatedly
 // Error handling class for validation of inputs such as email, password, and more
-class ErrorHandling  
+class ErrorHandling
 {
 public:
- // Validates email format
+    // Validates email format
     bool emailValidation(const string &email)
     {
         const string gmailSuffix = "@gmail.com"; // Define required email suffix
-        if (email.empty()) // Check if email is empty
+        if (email.empty())                       // Check if email is empty
         {
             return false;
         }
@@ -28,10 +28,10 @@ public:
         {
             return false;
         }
-// Split the email into prefix and suffix
+        // Split the email into prefix and suffix
         string prefix = email.substr(0, email.size() - gmailSuffix.size());
         string suffix = email.substr(email.size() - gmailSuffix.size());
-// Ensure suffix matches "@gmail.com"
+        // Ensure suffix matches "@gmail.com"
         if (suffix != gmailSuffix)
         {
             return false;
@@ -46,10 +46,10 @@ public:
         }
         return true; // Email is valid
     }
-// Validates password length
+    // Validates password length
     bool passwordValidation(const string &str)
     {
-        bool isLengthValid = str.length() >= 6;// Check if password has at least 6 characters
+        bool isLengthValid = str.length() >= 6; // Check if password has at least 6 characters
 
         if (!isLengthValid) // If password is too short, print an error message
         {
@@ -57,7 +57,7 @@ public:
         }
         return isLengthValid;
     }
- // Validates username (ensures it's not empty)
+    // Validates username (ensures it's not empty)
     bool nameValidation(string str)
     {
         if (str.empty()) // Check if the username is empty
@@ -66,7 +66,7 @@ public:
         }
         return true;
     }
- // Validates menu choice to ensure it contains only digits
+    // Validates menu choice to ensure it contains only digits
     bool menuChoice(string choice)
     {
         for (int i = 0; i < choice.size(); ++i)
@@ -76,7 +76,7 @@ public:
                 return false;
             }
         }
-        if (choice.empty())  // Ensure choice is not empty
+        if (choice.empty()) // Ensure choice is not empty
         {
             return false;
         }
@@ -89,15 +89,15 @@ public:
         }
         return true;
     }
- // Custom logic for handling password input with visibility toggle
+    // Custom logic for handling password input with visibility toggle
     void passLogic(string &password, string promptText)
     {
         char pass[32] = {0}; // Temporary buffer to store password characters
-        char ch; // To capture each input character
-        bool enter = false; // Flag to indicate when the user presses 'Enter'
-        int i = 0; // Index for the password array
-        bool show = false;  // Toggle for password visibility (hidden/show)
-        cout << promptText; // Display the prompt message
+        char ch;             // To capture each input character
+        bool enter = false;  // Flag to indicate when the user presses 'Enter'
+        int i = 0;           // Index for the password array
+        bool show = false;   // Toggle for password visibility (hidden/show)
+        cout << promptText;  // Display the prompt message
 
         while (!enter) // Loop until the user presses 'Enter'
         {
@@ -106,7 +106,7 @@ public:
             if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'))
             {
                 pass[i] = ch; // Store the character in the buffer
-                if (show)   // If password is visible, display the character
+                if (show)     // If password is visible, display the character
                 {
                     cout << ch;
                 }
@@ -114,9 +114,9 @@ public:
                 {
                     cout << "*";
                 }
-                i++;  // Move to the next character
+                i++; // Move to the next character
             }
-            if (ch == '\b' && i >= 1)  // Handle backspace
+            if (ch == '\b' && i >= 1) // Handle backspace
             {
                 cout << "\b \b"; // Remove the last character from the console
                 i--;
@@ -127,7 +127,7 @@ public:
             }
             if (ch == '\t') // Tab key toggles visibility
             {
-                show = !show; // Flip the show flag
+                show = !show;               // Flip the show flag
                 cout << "\r" << promptText; // Reset to the beginning of the line
                 for (int j = 0; j < i; j++)
                 {
@@ -504,7 +504,7 @@ void login()
         cout << "\n\n\tInvalid username or password!\n";
     }
 }
-
+// Function to handle admin login process
 bool adminLogin(string &loggedInAdmin)
 {
     string username, password;
@@ -512,6 +512,7 @@ bool adminLogin(string &loggedInAdmin)
     {
         cout << "\nEnter Admin Username: ";
         getline(cin, username);
+        // Validate username using error handling utility
         if (errorHandler.nameValidation(username))
         {
             break;
@@ -521,25 +522,29 @@ bool adminLogin(string &loggedInAdmin)
             cout << "\n\n\tInvalid Username. Please try again.\n";
         }
     }
+    // Prompt for admin password with masking
     errorHandler.passLogic(password, "Enter Admin Password: ");
 
+    // Check if username exists in the admins map
     if (admins.find(username) == admins.end())
     {
         cout << "\n\n\tAdmin not found.\n";
         return false;
     }
+    // Validate password against the stored password
     if (users[username].password != password)
     {
         cout << "Incorrect password.\n";
         return false;
     }
-
+    // Successful login; assign logged-in admin username
     loggedInAdmin = username;
     return true;
 }
-
+// Function to update the password of an existing admin
 void updateAdminPassword(const string &adminUsername)
 {
+    // Ensure the admin username exists in the admins map
     if (admins.find(adminUsername) == admins.end())
     {
         cout << "You must be an admin to access this feature.\n";
@@ -550,13 +555,15 @@ void updateAdminPassword(const string &adminUsername)
     while (true)
     {
         errorHandler.passLogic(newPassword, "Enter new Password: ");
+        // Validate the new password using error handling utility
         if (errorHandler.passwordValidation(newPassword))
-            break;
+        break;
     }
+    // Update the password in the users map
     users[adminUsername].password = newPassword;
     cout << "\n\n\tPassword updated successfully!\n";
 }
-
+// Function to add a new admin user
 void addNewAdmin()
 {
     string newAdminUsername, password, email;
@@ -564,6 +571,7 @@ void addNewAdmin()
     {
         cout << "\nEnter new admin's Username: ";
         getline(cin, newAdminUsername);
+        // Ensure username is valid and does not already exist
         if (errorHandler.nameValidation(newAdminUsername) && admins.find(newAdminUsername) == admins.end())
             break;
         cout << "\n\tInvalid Username. Please try again.\n";
@@ -572,6 +580,7 @@ void addNewAdmin()
     while (true)
     {
         errorHandler.passLogic(password, "Enter new admin's Password: ");
+        // Validate the password
         if (errorHandler.passwordValidation(password))
             break;
     }
@@ -580,25 +589,28 @@ void addNewAdmin()
     {
         cout << "\nEnter new admin's Valid Email: ";
         getline(cin, email);
+        // Validate the email address
         if (errorHandler.emailValidation(email))
             break;
         cout << "\n\tInvalid Email. Please try again.\n";
     }
-
+    // Create a new User object for the admin
     User newAdmin = {newAdminUsername, password, email, {}};
+    // Add the new admin to the users and admins maps
     users[newAdminUsername] = newAdmin;
     admins[newAdminUsername] = true;
     cout << "\n\tNew admin added successfully!\n";
 }
-
+// Function to remove an existing admin user
 void removeAdmin()
 {
     string targetAdminUsername;
     cout << "\nEnter the username of the admin to remove: ";
     getline(cin, targetAdminUsername);
-
+    // Check if the username exists in the admins map
     if (admins.find(targetAdminUsername) != admins.end())
     {
+        // Remove the admin from the admins and users maps
         admins.erase(targetAdminUsername);
         users.erase(targetAdminUsername);
         cout << "\n\tAdmin removed successfully!\n";
@@ -668,7 +680,7 @@ void displayAdminMenu()
     string loggedInAdmin;
     if (!adminLogin(loggedInAdmin))
     {
-        return; 
+        return;
     }
     while (true)
     {
