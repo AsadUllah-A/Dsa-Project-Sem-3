@@ -623,9 +623,10 @@ void removeAdmin()
         cout << "\n\tAdmin not found or cannot be removed.\n";
     }
 }
-
+// Function to display and manage the admin panel for updating admin-specific settings
 void updateadminPanel(const string &adminUsername)
 {
+    // Check if the user has admin access
     if (admins.find(adminUsername) == admins.end())
     {
         cout << "\n\tAccess Denied. Only admins can access this panel.\n";
@@ -647,6 +648,7 @@ void updateadminPanel(const string &adminUsername)
         {
             cout << "Enter your choice: ";
             getline(cin, option);
+            // Validate the menu choice using the error handling utility
             if (errorHandler.menuChoice(option))
             {
                 break;
@@ -656,14 +658,17 @@ void updateadminPanel(const string &adminUsername)
 
         if (option == "1")
         {
+            // Update the admin's own password
             updateAdminPassword(adminUsername);
         }
         else if (option == "2")
         {
+            // Add a new admin to the system
             addNewAdmin();
         }
         else if (option == "3")
         {
+            // Remove an existing admin
             removeAdmin();
         }
         else if (option == "4")
@@ -677,10 +682,11 @@ void updateadminPanel(const string &adminUsername)
         }
     }
 }
-
+// Function to display the main admin menu and handle admin functionalities
 void displayAdminMenu()
 {
     string loggedInAdmin;
+    // Attempt to log in as an admin
     if (!adminLogin(loggedInAdmin))
     {
         return;
@@ -704,6 +710,7 @@ void displayAdminMenu()
         {
             cout << "Enter your choice: ";
             getline(cin, option);
+            // Validate the menu choice using the error handling utility
             if (errorHandler.menuChoice(option))
             {
                 break;
@@ -713,30 +720,37 @@ void displayAdminMenu()
 
         if (option == "1")
         {
+            // Add a new event
             addEvent();
         }
         else if (option == "2")
         {
+            // Update an existing event
             updateEvent();
         }
         else if (option == "3")
         {
+            // Manage event tickets
             manageTickets();
         }
         else if (option == "4")
         {
+            // View all registered users
             viewAllUsers();
         }
         else if (option == "5")
         {
+            // View all available events
             displayAllEvents();
         }
         else if (option == "6")
         {
+            // View detailed user data
             displayAllUserData();
         }
         else if (option == "7")
         {
+            // Access the admin management panel
             updateadminPanel(loggedInAdmin);
         }
         else if (option == "0")
