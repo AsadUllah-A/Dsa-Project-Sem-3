@@ -969,7 +969,7 @@ void buyTickets(const string &username)
         }
     }
 }
-
+// Function to allow a user to cancel tickets for a specific event
 void cancelTicket(const string &username)
 {
     string eventIDStr;
@@ -977,27 +977,27 @@ void cancelTicket(const string &username)
 
     cout << "Enter event ID: ";
     getline(cin, eventIDStr);
-
+    // Validate the event ID and ensure the event exists
     if (!errorHandler.idValidation(eventIDStr) || events.find(stoi(eventIDStr)) == events.end())
     {
         cout << "Invalid event ID.\n";
         return;
     }
-
+    // Convert the valid event ID string to an integer
     eventID = stoi(eventIDStr);
-
+    // Check if the user exists in the system
     if (users.find(username) == users.end())
     {
         cout << "User not found.\n";
         return;
     }
-
+    // Check if the user has tickets for the specified event
     if (users[username].tickets.find(eventID) == users[username].tickets.end())
     {
         cout << "You have not bought any tickets for this event.\n";
         return;
     }
-
+    // Reference to the event object
     Event &event = events[eventID];
 
     while (true)
@@ -1015,9 +1015,10 @@ void cancelTicket(const string &username)
 
         if (choice == "1" || choice == "2")
         {
+            // Retrieve the number of tickets the user has already canceled for this event
             int vipTicketsBooked = users[username].canceledVipTickets[eventID];
             int regularTicketsBooked = users[username].canceledRegularTickets[eventID];
-
+            // Check if the user has any tickets of the selected type
             if ((choice == "1" && vipTicketsBooked == 0) || (choice == "2" && regularTicketsBooked == 0))
             {
                 cout << "You do not have any " << (choice == "1" ? "VIP" : "Regular") << " tickets for this event.\n";
@@ -1029,15 +1030,15 @@ void cancelTicket(const string &username)
 
             cout << "Enter number of tickets to cancel: ";
             getline(cin, numberOfTicketsStr);
-
+            // Validate the input for ticket quantity
             if (!errorHandler.idValidation(numberOfTicketsStr))
             {
                 cout << "Number of tickets must be a positive integer.\n";
                 continue;
             }
-
+            // Convert the valid string to an integer
             numberOfTickets = stoi(numberOfTicketsStr);
-
+            // Check if the user has enough tickets of the selected type to cancel
             if (choice == "1" && vipTicketsBooked < numberOfTickets)
             {
                 cout << "You don't have that many VIP tickets.\n";
@@ -1048,17 +1049,19 @@ void cancelTicket(const string &username)
                 cout << "You don't have that many Regular tickets.\n";
                 return;
             }
-
+            // Process VIP ticket cancellation
             if (choice == "1")
             {
                 int seatsToCancel = min(numberOfTickets, vipTicketsBooked);
-
+                // Add canceled VIP seats back to the queue
                 for (int i = 0; i < seatsToCancel; ++i)
                 {
                     event.vipSeatsQueue.push(0);
                 }
+                // Update user and event data
                 users[username].canceledVipTickets[eventID] -= seatsToCancel;
                 users[username].tickets[eventID] -= seatsToCancel;
+                // Remove the event from the user's ticket list if no tickets remain
                 if (users[username].tickets[eventID] == 0)
                 {
                     users[username].tickets.erase(eventID);
@@ -1067,16 +1070,19 @@ void cancelTicket(const string &username)
                 cout << "VIP tickets cancelled successfully!\n";
                 return;
             }
+            // Process Regular ticket cancellation
             else if (choice == "2")
             {
                 int seatsToCancel = min(numberOfTickets, regularTicketsBooked);
-
+               // Add canceled Regular seats back to the queue
                 for (int i = 0; i < seatsToCancel; ++i)
                 {
                     event.regularSeatsQueue.push(0);
                 }
+                // Update user and event data
                 users[username].canceledRegularTickets[eventID] -= seatsToCancel;
                 users[username].tickets[eventID] -= seatsToCancel;
+                // Remove the event from the user's ticket list if no tickets remain
                 if (users[username].tickets[eventID] == 0)
                 {
                     users[username].tickets.erase(eventID);
