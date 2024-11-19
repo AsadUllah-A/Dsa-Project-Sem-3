@@ -1,40 +1,42 @@
 #include <iostream>
-#include <conio.h>
-#include <iomanip>
-#include <string>
-#include <queue>
-#include <unordered_map>
-using namespace std;
-
-class ErrorHandling
+#include <conio.h> // For `_getch` to capture user input without echo
+#include <iomanip> // For formatted output (e.g., setting width in console)
+#include <string>  // For working with strings
+#include <queue>   // For using priority queues
+#include <unordered_map>   // For hash table-based key-value data structure
+using namespace std;    // To avoid writing `std::` repeatedly
+// Error handling class for validation of inputs such as email, password, and more
+class ErrorHandling  
 {
 public:
+ // Validates email format
     bool emailValidation(const string &email)
     {
-        const string gmailSuffix = "@gmail.com";
-        if (email.empty())
+        const string gmailSuffix = "@gmail.com"; // Define required email suffix
+        if (email.empty()) // Check if email is empty
         {
             return false;
         }
-        for (char ch : email)
+        for (char ch : email) // Check if email contains any spaces
         {
             if (isspace(ch))
             {
                 return false;
             }
         }
-        if (email.size() <= gmailSuffix.size() + 4)
+        if (email.size() <= gmailSuffix.size() + 4) // Minimum valid email length
         {
             return false;
         }
-
+// Split the email into prefix and suffix
         string prefix = email.substr(0, email.size() - gmailSuffix.size());
         string suffix = email.substr(email.size() - gmailSuffix.size());
-
+// Ensure suffix matches "@gmail.com"
         if (suffix != gmailSuffix)
         {
             return false;
         }
+        // Check prefix for valid characters
         for (char ch : prefix)
         {
             if (!islower(ch) && !isdigit(ch) && ch != '.' && ch != '_' && ch != '-')
@@ -42,93 +44,94 @@ public:
                 return false;
             }
         }
-        return true;
+        return true; // Email is valid
     }
-
+// Validates password length
     bool passwordValidation(const string &str)
     {
-        bool isLengthValid = str.length() >= 6;
+        bool isLengthValid = str.length() >= 6;// Check if password has at least 6 characters
 
-        if (!isLengthValid)
+        if (!isLengthValid) // If password is too short, print an error message
         {
             cout << "\n\n\tPassword must be at least 6 characters long.\n\n";
         }
         return isLengthValid;
     }
-
+ // Validates username (ensures it's not empty)
     bool nameValidation(string str)
     {
-        if (str.empty())
+        if (str.empty()) // Check if the username is empty
         {
             return false;
         }
         return true;
     }
-
+ // Validates menu choice to ensure it contains only digits
     bool menuChoice(string choice)
     {
         for (int i = 0; i < choice.size(); ++i)
         {
-            if (!isdigit(choice[i]))
+            if (!isdigit(choice[i])) // Ensure all characters are digits
             {
                 return false;
             }
         }
-        if (choice.empty())
+        if (choice.empty())  // Ensure choice is not empty
         {
             return false;
         }
         for (int i = 0; i < choice.size(); ++i)
         {
-            if (choice[i] == ' ')
+            if (choice[i] == ' ') // Ensure no spaces in the choice
             {
                 return false;
             }
         }
         return true;
     }
-
+ // Custom logic for handling password input with visibility toggle
     void passLogic(string &password, string promptText)
     {
-        char pass[32] = {0};
-        char ch;
-        bool enter = false;
-        int i = 0;
-        bool show = false;
-        cout << promptText;
+        char pass[32] = {0}; // Temporary buffer to store password characters
+        char ch; // To capture each input character
+        bool enter = false; // Flag to indicate when the user presses 'Enter'
+        int i = 0; // Index for the password array
+        bool show = false;  // Toggle for password visibility (hidden/show)
+        cout << promptText; // Display the prompt message
 
-        while (!enter)
+        while (!enter) // Loop until the user presses 'Enter'
         {
-            ch = _getch();
+            ch = _getch(); // Get a single character from the user
+            // Check for valid password characters (letters and digits)
             if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'))
             {
-                pass[i] = ch;
-                if (show)
+                pass[i] = ch; // Store the character in the buffer
+                if (show)   // If password is visible, display the character
                 {
                     cout << ch;
                 }
-                else
+                else // If password is hidden, display '*'
                 {
                     cout << "*";
                 }
-                i++;
+                i++;  // Move to the next character
             }
-            if (ch == '\b' && i >= 1)
+            if (ch == '\b' && i >= 1)  // Handle backspace
             {
-                cout << "\b \b";
+                cout << "\b \b"; // Remove the last character from the console
                 i--;
             }
-            if (ch == '\r')
+            if (ch == '\r') // Enter key pressed
             {
                 enter = true;
             }
-            if (ch == '\t')
+            if (ch == '\t') // Tab key toggles visibility
             {
-                show = !show;
-                cout << "\r" << promptText;
+                show = !show; // Flip the show flag
+                cout << "\r" << promptText; // Reset to the beginning of the line
                 for (int j = 0; j < i; j++)
                 {
-                    cout << (show ? pass[j] : '*');
+                    cout << (show ? pass[j] : '*'); // Re-display the password
                 }
             }
         }
