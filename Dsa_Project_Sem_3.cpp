@@ -764,9 +764,10 @@ void displayAdminMenu()
         }
     }
 }
-
+// Function to search for events based on the event name
 void searchEvents()
 {
+    // Check if there are any events in the system
     if (events.empty())
     {
         cout << "No events available to search.\n";
@@ -779,13 +780,16 @@ void searchEvents()
 
     bool found = false;
     cout << "Search results:\n";
+    // Iterate through all events to find matches
     for (const auto &event : events)
     {
         int eventID = event.first;
         const Event &e = event.second;
+        // Check if the event name contains the query string
         if (e.eventName.find(query) != string::npos)
         {
             cout << "Event ID: " << eventID << ", Event Name: " << e.eventName << '\n';
+            // Display seat availability for the event
             if (e.vipSeatsQueue.empty() && e.regularSeatsQueue.empty())
             {
                 cout << "No seats left.\n";
@@ -803,9 +807,10 @@ void searchEvents()
         cout << "No events found matching the query.\n";
     }
 }
-
+// Function to display all available events
 void displayAllEvents()
 {
+    // Check if there are any events to display
     if (events.empty())
     {
         cout << "No events available.\n";
@@ -813,6 +818,7 @@ void displayAllEvents()
     }
 
     cout << "All events:\n";
+    // Iterate through all events and display their details
     for (const auto &event : events)
     {
         int eventID = event.first;
@@ -823,9 +829,10 @@ void displayAllEvents()
              << ", Regular Seats Available: " << e.regularSeatsQueue.size() << '\n';
     }
 }
-
+// Function to view all registered users in the system
 void viewAllUsers()
 {
+    // Check if there are any users in the system
     if (users.empty())
     {
         cout << "\nNo users are registered yet.\n";
@@ -833,15 +840,17 @@ void viewAllUsers()
     else
     {
         cout << "\nRegistered Users:\n";
+        // Iterate through all users and display their information
         for (const auto &user : users)
         {
             cout << "Username: " << user.second.username << ", Email: " << user.second.email << "\n";
         }
     }
 }
-
+// Function to buy tickets for an event
 void buyTickets(const string &username)
 {
+    // Check if there are any events available for booking
     if (events.empty())
     {
         cout << "No events available.\n";
@@ -853,13 +862,13 @@ void buyTickets(const string &username)
 
     cout << "Enter event ID: ";
     getline(cin, eventIDStr);
-
+    // Validate the event ID input and check if the event exists
     if (!errorHandler.idValidation(eventIDStr) || events.find(stoi(eventIDStr)) == events.end())
     {
         cout << "Invalid event ID.\n";
         return;
     }
-
+    // Convert the valid string to an integer
     eventID = stoi(eventIDStr);
 
     Event &event = events[eventID];
@@ -886,7 +895,7 @@ void buyTickets(const string &username)
             }
             cout << "\n\tInvalid option! Please try again.\n\n";
         }
-
+        // Handle ticket booking based on the user's choice
         if (choice == "1" || choice == "2")
         {
             string numberOfTicketsStr;
@@ -894,14 +903,14 @@ void buyTickets(const string &username)
 
             cout << "Enter number of tickets: ";
             getline(cin, numberOfTicketsStr);
-
+            // Validate the ticket quantity input
             if (!errorHandler.idValidation(numberOfTicketsStr))
             {
                 cout << "Number of tickets must be a positive integer.\n";
                 continue;
             }
             numberOfTickets = stoi(numberOfTicketsStr);
-
+            // Handle VIP ticket booking
             if (choice == "1")
             {
                 if (event.vipSeatsQueue.size() < numberOfTickets)
@@ -909,7 +918,7 @@ void buyTickets(const string &username)
                     cout << "Not enough VIP seats available. Total VIP seats left: " << event.vipSeatsQueue.size() << ".\n";
                     return;
                 }
-
+                // Book the requested number of VIP tickets
                 while (vipTicketsBooked < numberOfTickets && !event.vipSeatsQueue.empty())
                 {
                     event.vipSeatsQueue.pop();
@@ -918,6 +927,7 @@ void buyTickets(const string &username)
 
                 users[username].canceledVipTickets[eventID] += vipTicketsBooked;
             }
+            // Handle Regular ticket booking
             else if (choice == "2")
             {
                 if (event.regularSeatsQueue.size() < numberOfTickets)
@@ -925,7 +935,7 @@ void buyTickets(const string &username)
                     cout << "Not enough Regular seats available. Total Regular seats left: " << event.regularSeatsQueue.size() << ".\n";
                     return;
                 }
-
+                // Book the requested number of Regular tickets
                 while (regularTicketsBooked < numberOfTickets && !event.regularSeatsQueue.empty())
                 {
                     event.regularSeatsQueue.pop();
@@ -934,7 +944,7 @@ void buyTickets(const string &username)
 
                 users[username].canceledRegularTickets[eventID] += regularTicketsBooked;
             }
-
+            // Confirm successful booking
             if ((choice == "1" && vipTicketsBooked == numberOfTickets) || (choice == "2" && regularTicketsBooked == numberOfTickets))
             {
                 users[username].tickets[eventID] += numberOfTickets;
