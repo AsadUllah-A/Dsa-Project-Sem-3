@@ -136,26 +136,26 @@ public:
             }
         }
 
-        pass[i] = '\0';
-        password = pass;
+        pass[i] = '\0'; // Null-terminate the password string
+        password = pass;  // Assign the password to the passed reference
     }
-
+ // Validates if an ID contains only digits and no spaces
     bool idValidation(string idString)
     {
         for (int i = 0; i < idString.size(); ++i)
         {
-            if (!isdigit(idString[i]))
+            if (!isdigit(idString[i])) // Ensure all characters are digits
             {
                 return false;
             }
         }
-        if (idString.empty())
+        if (idString.empty()) // Ensure ID is not empty
         {
             return false;
         }
         for (int i = 0; i < idString.size(); ++i)
         {
-            if (idString[i] == ' ')
+            if (idString[i] == ' ')  // Ensure no spaces in the ID
             {
                 return false;
             }
@@ -163,36 +163,39 @@ public:
         return true;
     }
 };
+// Instantiate an object of the ErrorHandling class
 ErrorHandling errorHandler;
-
+// User structure to store user-related data
 struct User
 {
-    string username;
-    string password;
-    string email;
-    unordered_map<int, int> tickets;
-    unordered_map<int, int> canceledVipTickets;
-    unordered_map<int, int> canceledRegularTickets;
+    string username; // Username of the user
+    string password; // Password of the user
+    string email; // Email address of the user
+    unordered_map<int, int> tickets; // Map of event ID to the number of tickets purchased
+    unordered_map<int, int> canceledVipTickets; // Map of canceled VIP tickets by event ID
+    unordered_map<int, int> canceledRegularTickets; // Map of canceled regular tickets by event ID
 };
-
+// Event structure to store event-related data
 struct Event
 {
-    int eventId;
-    string eventName;
-    int totalSeats;
-    int vipSeats;
-    int regularSeats;
-    priority_queue<int> vipSeatsQueue;
-    priority_queue<int, vector<int>, greater<int>> regularSeatsQueue;
+    int eventId; // Unique identifier for the event
+    string eventName; // Name of the event
+    int totalSeats; // Total number of seats available
+    int vipSeats;  // Number of VIP seats available
+    int regularSeats;  // Number of regular seats available
+    priority_queue<int> vipSeatsQueue; // Priority queue for VIP seats (highest priority first)
+    priority_queue<int, vector<int>, greater<int>> regularSeatsQueue;  // Min-heap for regular seats
+     // Default constructor to initialize an empty event
     Event() : eventId(0), eventName(""), totalSeats(0), vipSeats(0), regularSeats(0) {}
-
+ // Parameterized constructor to initialize an event with specific details
     Event(int id, const string &name, int total, int vip, int regular)
         : eventId(id), eventName(name), totalSeats(total), vipSeats(vip), regularSeats(regular) {}
 };
-
-unordered_map<string, User> users;
-unordered_map<int, Event> events;
-unordered_map<string, bool> admins;
+// Global data structures to store users, events, and admins
+unordered_map<string, User> users; // Map of username to user data
+unordered_map<int, Event> events; // Map of event ID to event data
+unordered_map<string, bool> admins;  // Map of admin username to admin status (true/false)
+// Function prototypes (to be implemented elsewhere)
 void setupDefaultAdmin();
 void updateUserProfile(const string &username);
 void signup();
@@ -215,31 +218,31 @@ void updateAdminPassword(const string &adminUsername);
 void displayAdminMenu();
 void displayAllEvents();
 void displayAllUserData();
-
+// Utility function to convert a string to lowercase
 string toLowerCase(const string &str)
 {
     string lowerStr = str; // Create a copy to modify
     for (int i = 0; i < lowerStr.length(); i++)
     {
-        lowerStr[i] = tolower(lowerStr[i]);
+        lowerStr[i] = tolower(lowerStr[i]); // Convert each character to lowercase
     }
     return lowerStr;
 }
-
+// Function to display all user data (except admins)
 void displayAllUserData()
 {
-    if (users.empty())
+    if (users.empty()) // Check if there are no users
     {
         cout << "No users available.\n";
         return;
     }
-    cout << "User Data:\n";
-    for (const auto &userPair : users)
+    cout << "User Data:\n"; // Header for user data
+    for (const auto &userPair : users) // Loop through all users
     {
-        const string &username = userPair.first;
-        const User &user = userPair.second;
+        const string &username = userPair.first;  // Extract the username
+        const User &user = userPair.second; // Extract the user data
 
-        if (admins.find(username) != admins.end() && admins.at(username))
+        if (admins.find(username) != admins.end() && admins.at(username)) // Skip admins
         {
             continue;
         }
