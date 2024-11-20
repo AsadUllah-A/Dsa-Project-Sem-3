@@ -383,7 +383,7 @@ void updateUserProfile(const string &username)
         }
     }
 }
-
+// Function to handle user signup
 void signup()
 {
     string username, password, email;
@@ -395,6 +395,7 @@ void signup()
         {
             cout << "\nEnter Username: ";
             getline(cin, username);
+            // Check if the username is valid
             if (errorHandler.nameValidation(username))
             {
                 break;
@@ -404,14 +405,16 @@ void signup()
                 cout << "\n\n\tInvalid Username. Please try again.\n";
             }
         }
-
+        // Convert username to lowercase for case-insensitive comparison
         string lowerUsername = toLowerCase(username);
-
+        // Check if the username already exists
         bool usernameExists = false;
         for (const auto &user : users)
         {
+            // Compare usernames ignoring case
             if (toLowerCase(user.first) == lowerUsername)
             {
+                // Mark username as existing
                 usernameExists = true;
                 break;
             }
@@ -422,7 +425,7 @@ void signup()
             cout << "\n\tUsername already exists. Please try again.\n";
             continue;
         }
-
+        // Redundant validation check (could be removed)
         if (errorHandler.nameValidation(username))
         {
             break;
@@ -435,7 +438,9 @@ void signup()
 
     while (true)
     {
+        // Get and validate the password
         errorHandler.passLogic(password, "Enter Password: ");
+        // Check if the password meets criteria
         if (errorHandler.passwordValidation(password))
         {
             break;
@@ -446,12 +451,13 @@ void signup()
     {
         cout << "\nEnter Valid Email: ";
         getline(cin, email);
-
+        // Convert email to lowercase for case-insensitive comparison
         string lowerEmail = toLowerCase(email);
 
         bool emailExists = false;
         for (const auto &user : users)
         {
+            // Compare emails ignoring case
             if (toLowerCase(user.second.email) == lowerEmail)
             {
                 emailExists = true;
@@ -464,7 +470,7 @@ void signup()
             cout << "\n\tEmail already exists. Please try again.\n";
             continue;
         }
-
+        // Validate email format
         if (errorHandler.emailValidation(email))
         {
             break;
@@ -474,13 +480,14 @@ void signup()
             cout << "\n\tInvalid Email. Please try again.\n";
         }
     }
-
-    User newUser = {username, password, email, {}};
+    // Create a new user object and add it to the users map
+    User newUser = {username, password, email, {}}; // Initialize a new user
+    // Add the user to the map using the username as the key
     users[username] = newUser;
 
     cout << "\n\tSignup Successfully!";
 }
-
+// Function to handle user login
 void login()
 {
     string username, password;
@@ -488,6 +495,7 @@ void login()
     {
         cout << "\nEnter Username: ";
         getline(cin, username);
+        // Validate username format
         if (errorHandler.nameValidation(username))
         {
             break;
@@ -507,6 +515,7 @@ void login()
         {
             userFound = true;
             cout << "\n\n\tWelcome, " << user.first << ".\n";
+            // Call a function to display the user menu (assumed to exist)
             displayUserMenu(user.first);
             break;
         }
