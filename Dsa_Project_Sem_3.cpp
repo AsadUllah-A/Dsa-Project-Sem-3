@@ -241,34 +241,37 @@ void displayAllUserData()
     {
         const string &username = userPair.first; // Extract the username
         const User &user = userPair.second;      // Extract the user data
-
+        // Skip displaying data for admin users
         if (admins.find(username) != admins.end() && admins.at(username)) // Skip admins
         {
             continue;
         }
 
         cout << "Username: " << user.username << "\nEmail: " << user.email << "\nTickets:\n";
-
+        // Check if the user has no tickets
         if (user.tickets.empty())
         {
             cout << "  No tickets bought.\n";
         }
         else
         {
+            // Loop through the user's tickets
             for (const auto &ticketPair : user.tickets)
             {
                 int eventID = ticketPair.first;
+                // Extract the total tickets for the event
                 int totalTickets = ticketPair.second;
 
                 int vipTickets = 0;
                 int regularTickets = 0;
+                // Get event details using the event ID
                 const Event &event = events.at(eventID);
-
+                // Check if any VIP tickets were canceled and update the count
                 if (user.canceledVipTickets.find(eventID) != user.canceledVipTickets.end())
                 {
                     vipTickets = user.canceledVipTickets.at(eventID);
                 }
-
+                // Check if any regular tickets were canceled and update the count
                 if (user.canceledRegularTickets.find(eventID) != user.canceledRegularTickets.end())
                 {
                     regularTickets = user.canceledRegularTickets.at(eventID);
@@ -284,9 +287,10 @@ void displayAllUserData()
         cout << "-------------------------------\n";
     }
 }
-
+// Function to update a user's profile information
 void updateUserProfile(const string &username)
 {
+    // Check if the user exists in the system
     if (users.find(username) == users.end())
     {
         cout << "\n\tUser not found.";
@@ -308,25 +312,28 @@ void updateUserProfile(const string &username)
         {
             cout << "Enter your choice: ";
             getline(cin, choice);
+            // Validate the choice
             if (errorHandler.menuChoice(choice))
             {
                 break;
             }
             cout << "\n\tInvalid option! Please try again.\n\n";
         }
-
+        // Update username
         if (choice == "1")
         {
             while (true)
             {
                 cout << "Enter new username: ";
                 getline(cin, newValue);
+                // Validate the new username
                 if (errorHandler.nameValidation(newValue))
                 {
                     break;
                 }
                 cout << "\n\tInvalid username\n\n";
             }
+            // Update the username
             users[username].username = newValue;
             cout << "\n\tUsername updated successfully!\n";
         }
@@ -335,7 +342,9 @@ void updateUserProfile(const string &username)
         {
             while (true)
             {
+                // Get new password
                 errorHandler.passLogic(newValue, "Enter new Password: ");
+                // Validate the new password
                 if (errorHandler.passwordValidation(newValue))
                 {
                     break;
@@ -350,6 +359,7 @@ void updateUserProfile(const string &username)
             {
                 cout << "Enter new email: ";
                 getline(cin, newValue);
+                // Validate the new email
                 if (errorHandler.emailValidation(newValue))
                 {
                     break;
