@@ -136,10 +136,10 @@ public:
             }
         }
 
-        pass[i] = '\0'; // Null-terminate the password string
-        password = pass;  // Assign the password to the passed reference
+        pass[i] = '\0';  // Null-terminate the password string
+        password = pass; // Assign the password to the passed reference
     }
- // Validates if an ID contains only digits and no spaces
+    // Validates if an ID contains only digits and no spaces
     bool idValidation(string idString)
     {
         for (int i = 0; i < idString.size(); ++i)
@@ -155,7 +155,7 @@ public:
         }
         for (int i = 0; i < idString.size(); ++i)
         {
-            if (idString[i] == ' ')  // Ensure no spaces in the ID
+            if (idString[i] == ' ') // Ensure no spaces in the ID
             {
                 return false;
             }
@@ -168,33 +168,33 @@ ErrorHandling errorHandler;
 // User structure to store user-related data
 struct User
 {
-    string username; // Username of the user
-    string password; // Password of the user
-    string email; // Email address of the user
-    unordered_map<int, int> tickets; // Map of event ID to the number of tickets purchased
-    unordered_map<int, int> canceledVipTickets; // Map of canceled VIP tickets by event ID
+    string username;                                // Username of the user
+    string password;                                // Password of the user
+    string email;                                   // Email address of the user
+    unordered_map<int, int> tickets;                // Map of event ID to the number of tickets purchased
+    unordered_map<int, int> canceledVipTickets;     // Map of canceled VIP tickets by event ID
     unordered_map<int, int> canceledRegularTickets; // Map of canceled regular tickets by event ID
 };
 // Event structure to store event-related data
 struct Event
 {
-    int eventId; // Unique identifier for the event
-    string eventName; // Name of the event
-    int totalSeats; // Total number of seats available
-    int vipSeats;  // Number of VIP seats available
-    int regularSeats;  // Number of regular seats available
-    priority_queue<int> vipSeatsQueue; // Priority queue for VIP seats (highest priority first)
-    priority_queue<int, vector<int>, greater<int>> regularSeatsQueue;  // Min-heap for regular seats
-     // Default constructor to initialize an empty event
+    int eventId;                                                      // Unique identifier for the event
+    string eventName;                                                 // Name of the event
+    int totalSeats;                                                   // Total number of seats available
+    int vipSeats;                                                     // Number of VIP seats available
+    int regularSeats;                                                 // Number of regular seats available
+    priority_queue<int> vipSeatsQueue;                                // Priority queue for VIP seats (highest priority first)
+    priority_queue<int, vector<int>, greater<int>> regularSeatsQueue; // Min-heap for regular seats
+                                                                      // Default constructor to initialize an empty event
     Event() : eventId(0), eventName(""), totalSeats(0), vipSeats(0), regularSeats(0) {}
- // Parameterized constructor to initialize an event with specific details
+    // Parameterized constructor to initialize an event with specific details
     Event(int id, const string &name, int total, int vip, int regular)
         : eventId(id), eventName(name), totalSeats(total), vipSeats(vip), regularSeats(regular) {}
 };
 // Global data structures to store users, events, and admins
-unordered_map<string, User> users; // Map of username to user data
-unordered_map<int, Event> events; // Map of event ID to event data
-unordered_map<string, bool> admins;  // Map of admin username to admin status (true/false)
+unordered_map<string, User> users;  // Map of username to user data
+unordered_map<int, Event> events;   // Map of event ID to event data
+unordered_map<string, bool> admins; // Map of admin username to admin status (true/false)
 // Function prototypes (to be implemented elsewhere)
 void setupDefaultAdmin();
 void updateUserProfile(const string &username);
@@ -236,11 +236,11 @@ void displayAllUserData()
         cout << "No users available.\n";
         return;
     }
-    cout << "User Data:\n"; // Header for user data
+    cout << "User Data:\n";            // Header for user data
     for (const auto &userPair : users) // Loop through all users
     {
-        const string &username = userPair.first;  // Extract the username
-        const User &user = userPair.second; // Extract the user data
+        const string &username = userPair.first; // Extract the username
+        const User &user = userPair.second;      // Extract the user data
 
         if (admins.find(username) != admins.end() && admins.at(username)) // Skip admins
         {
@@ -560,7 +560,7 @@ void updateAdminPassword(const string &adminUsername)
         errorHandler.passLogic(newPassword, "Enter new Password: ");
         // Validate the new password using error handling utility
         if (errorHandler.passwordValidation(newPassword))
-        break;
+            break;
     }
     // Update the password in the users map
     users[adminUsername].password = newPassword;
@@ -605,11 +605,18 @@ void addNewAdmin()
     cout << "\n\tNew admin added successfully!\n";
 }
 // Function to remove an existing admin user
+// Function to remove an existing admin user
 void removeAdmin()
 {
     string targetAdminUsername;
     cout << "\nEnter the username of the admin to remove: ";
     getline(cin, targetAdminUsername);
+
+    if (admins.size() <= 1)
+    {
+        cout << "Atleast one admin exists!" << endl;
+        return;
+    }
     // Check if the username exists in the admins map
     if (admins.find(targetAdminUsername) != admins.end())
     {
@@ -1074,7 +1081,7 @@ void cancelTicket(const string &username)
             else if (choice == "2")
             {
                 int seatsToCancel = min(numberOfTickets, regularTicketsBooked);
-               // Add canceled Regular seats back to the queue
+                // Add canceled Regular seats back to the queue
                 for (int i = 0; i < seatsToCancel; ++i)
                 {
                     event.regularSeatsQueue.push(0);
@@ -1591,7 +1598,7 @@ void setupDefaultAdmin()
     }
 
     string defaultAdminUsername3 = "irtaza";
-    string defaultAdminPassword3 = "55181";
+    string defaultAdminPassword3 = "53759";
     string defaultAdminEmail3 = "admin3@example.com";
 
     if (users.find(defaultAdminUsername3) == users.end())
